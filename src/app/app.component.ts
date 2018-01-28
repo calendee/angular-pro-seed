@@ -19,9 +19,11 @@ import { User } from './auth-form/auth-form.interface';
         <button type="submit">
           Login
         </button>
-        <auth-remember 
-          (checked)="rememberUser($event)">
-        </auth-remember>
+
+        <auth-remember (checked)="rememberUser($event)"></auth-remember>
+        <auth-remember (checked)="rememberUser($event)"></auth-remember>
+        <auth-remember (checked)="rememberUser($event)"></auth-remember>
+
       </auth-form>
     </div>
   `
