@@ -1,5 +1,5 @@
 import {
-  Component, Output, EventEmitter, ViewChildren, AfterViewInit, ContentChildren, QueryList, AfterContentInit,
+  Component, Output, EventEmitter, ViewChildren, ViewChild, ElementRef , AfterViewInit, ContentChildren, QueryList, AfterContentInit,
   ChangeDetectorRef
 } from '@angular/core';
 
@@ -16,7 +16,7 @@ import { User } from './auth-form.interface';
         <ng-content select="h3"></ng-content>
         <label>
           Email address
-          <input type="email" name="email" ngModel>
+          <input type="email" name="email" ngModel #email>
         </label>
         <label>
           Password
@@ -25,8 +25,7 @@ import { User } from './auth-form.interface';
         <ng-content select="auth-remember"></ng-content>
         
         <auth-message [style.display]="showMessage ? 'inherit' : 'none'"></auth-message>
-        <auth-message [style.display]="showMessage ? 'inherit' : 'none'"></auth-message>
-        <auth-message [style.display]="showMessage ? 'inherit' : 'none'"></auth-message>
+
         <ng-content select="button"></ng-content>
       </form>
     </div>
@@ -35,6 +34,8 @@ import { User } from './auth-form.interface';
 export class AuthFormComponent implements AfterContentInit, AfterViewInit {
 
   showMessage: boolean;
+
+  @ViewChild('email') email: ElementRef;
 
   @ViewChildren(AuthMessageComponent) message: QueryList<AuthMessageComponent>;
 
@@ -47,6 +48,9 @@ export class AuthFormComponent implements AfterContentInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+
+    console.log('email = ', this.email);
+
     if(this.message) {
 
       this.message.forEach((message) => {
