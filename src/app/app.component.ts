@@ -1,5 +1,5 @@
 import {
-  AfterContentInit, Component, ComponentFactoryResolver, ComponentRef, ViewChild,
+  AfterContentInit, Component, ComponentFactoryResolver, ComponentRef, TemplateRef, ViewChild,
   ViewContainerRef
 } from '@angular/core';
 
@@ -10,11 +10,10 @@ import { User } from './auth-form/auth-form.interface';
 @Component({
   selector: 'app-root',
   template: `
-    <div>
-      <button (click)="destroyComponent()">Destroy</button>
-      <button (click)="moveComponent()">Move</button>
-      <div #entry></div>
-    </div>
+    <template #tmpl>
+      Justin Noel: USA
+    </template>
+
   `
 })
 export class AppComponent implements  AfterContentInit {
@@ -22,29 +21,11 @@ export class AppComponent implements  AfterContentInit {
   component: ComponentRef<AuthFormComponent>;
 
   @ViewChild('entry', { read: ViewContainerRef }) entry: ViewContainerRef;
-
-  constructor(
-    private resolver: ComponentFactoryResolver
-  ) {}
+  @ViewChild('tmpl') tmpl: TemplateRef<any>;
 
   ngAfterContentInit() {
-    const authFormFactory = this.resolver.resolveComponentFactory(AuthFormComponent);
-    this.entry.createComponent(authFormFactory);
-    this.component = this.entry.createComponent(authFormFactory, 0);
-    this.component.instance.title = 'Create Account';
-    this.component.instance.submitted.subscribe(this.loginUser);
-  }
 
-  loginUser(user: User) {
-    console.log('Login', user);
-  }
-
-  destroyComponent() {
-    this.component.destroy();
-  }
-
-  moveComponent() {
-    this.entry.move(this.component.hostView, 1);
+    this.entry.createEmbeddedView(this.tmpl);
   }
 
 }
